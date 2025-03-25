@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+
+    <title>Hate Speech Detection</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: "Lato", sans-serif;
+      }
+
+      .container {
+        margin-top: 5rem;
+        max-width: 800px;
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #343a40;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .subtext {
+        font-size: 1.1rem;
+        text-align: center;
+        color: #6c757d;
+        margin-bottom: 2rem;
+      }
+
+      textarea {
+        width: 100%;
+        border-radius: 8px;
+        padding: 1rem;
+        font-size: 1rem;
+        border: 1px solid #ced4da;
+        resize: none;
+      }
+
+      textarea::placeholder {
+        color: #adb5bd;
+      }
+
+      .submit-btn {
+        width: 100%;
+        background-color: #28a745;
+        color: #ffffff;
+        border: none;
+        padding: 0.75rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        background-color: #218838;
+      }
+
+      .result-box {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+
+      .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+      }
+
+      .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 class="header-title">🚨 Hate Speech Detection</h1>
+      <p class="subtext">
+        Detect abusive language or hate speech in real-time!
+      </p>
+
+      <!-- Form -->
+      <form
+        action="{{ url_for('predict') }}"
+        method="POST"
+        class="needs-validation"
+        novalidate
+      >
+        <div class="form-group">
+          <textarea
+            name="comment"
+            rows="5"
+            placeholder="Enter text for prediction"
+            required
+          >
+{{ user_comment }}</textarea
+          >
+          <div class="invalid-feedback text-center">
+            ⚠️ Please enter text to analyze.
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Predict</button>
+      </form>
+
+      <!-- Prediction Output -->
+      {% if prediction is not none %}
+      <div
+        class="result-box {% if prediction[0] == 1 %}alert-danger{% else %}alert-success{% endif %}"
+      >
+        <strong>
+          {% if prediction[0] == 1 %} 🚨 Hate Speech Detected! {% else %} ✅ No
+          Hate Speech Detected! {% endif %}
+        </strong>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Optional JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+    <script>
+      // Form validation
+      (function () {
+        "use strict";
+        window.addEventListener(
+          "load",
+          function () {
+            var forms = document.getElementsByClassName("needs-validation");
+            Array.prototype.filter.call(forms, function (form) {
+              form.addEventListener(
+                "submit",
+                function (event) {
+                  if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                  }
+                  form.classList.add("was-validated");
+                },
+                false
+              );
+            });
+          },
+          false
+        );
+      })();
+    </script>
+  </body>
+</html>
