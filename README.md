@@ -6,5 +6,11 @@ pip install -r requirements.txt
 ```
 
 ```bash
+pip install Werkzeug==2.2.2
+```
+
+
+```bash
 python app.py
 ```
+
